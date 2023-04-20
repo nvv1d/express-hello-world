@@ -6,7 +6,7 @@ const os = require("os");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 var request = require("request");
 //const fetch = require("node-fetch");
-const render_app_url = "https://avidakekiri.osc-fr1.scalingo.io";
+const render_app_url = "https://clever-mite-sneakers.cyclic.app";
 
 app.get("/", (req, res) => {
   res.send("hello world");
