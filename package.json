@@ -4,10 +4,8 @@
   "description": "Expressjs Hello World example to provide faster start deploying on Cyclic platform",
   "main": "server.js",
   "scripts": {
-    "serve": "nodemon --watch . server.js",
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "start": "node server.js"
+}
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cyclic-software/express-hello-world.git"
@@ -19,13 +17,12 @@
   },
   "homepage": "https://github.com/cyclic-software/express-hello-world#readme",
   "dependencies": {
-    "express": "^4.17.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.12",
-    "express": "^4.18.2",
+    "express": "^4.17.1",
     "http-proxy-middleware": "^2.0.6",
     "node-fetch": "^2.6.2",
     "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
   }
 }
