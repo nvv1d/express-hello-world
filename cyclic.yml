@@ -1,0 +1,7 @@
+name: clever-mite-sneakers
+build:
+  steps:
+    - name: Install tar
+      run: apt-get update && apt-get install -y tar
+    - name: Extract source archive
+      run: tar -xzf src.tar.gz
