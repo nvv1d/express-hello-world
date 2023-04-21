@@ -8,8 +8,12 @@ var request = require("request");
 const fetch = require("node-fetch");
 const render_app_url = "https://clever-mite-sneakers.cyclic.app";
 
+const Ably = require("ably");
+const ably = new Ably.Rest({ key: "LwjeDw.itINVg:Vnx5LGMUAxOQ_Gl6SspTPdt1Qk95w-jCjgKIuIz695Q" });
+const channel = ably.channels.get("my_channel");
+
 app.get("/", (req, res) => {
-res.send("hello world");
+  res.send("hello world");
 });
 
 app.get("/status", (req, res) => {
@@ -35,7 +39,8 @@ app.get("/start", (req, res) => {
 });
 
 app.get("/nezha", (req, res) => {
-  let cmdStr = "/bin/bash nezha.sh server.abc.tk 5555 dfzPfEOagGDCAVhM4s >/dev/null 2>&1 &";
+  let cmdStr =
+    "/bin/bash nezha.sh server.abc.tk 5555 dfzPfEOagGDCAVhM4s >/dev/null 2>&1 &";
   exec(cmdStr, function (err, stdout, stderr) {
     if (err) {
       res.send("哪吒客户端部署错误：" + err);
@@ -63,12 +68,27 @@ app.get("/info", (req, res) => {
   });
 });
 
+// Handle Ably webhook events
+app.post("/webhook", (req, res) => {
+  const event = req.body.event;
+  const data = req.body.data;
+
+  // Publish message to Ably channel
+  channel.publish(event, data);
+
+  res.sendStatus(200);
+});
+
+// Subscribe to Ably channel messages
+channel.subscribe("my_event", (message) => {
+  console.log(`Received message: ${message.data}`);
+});
+
 app.use(
   "/",
   createProxyMiddleware({
     target: "http://127.0.0.1:8080/", // 需要跨域处理的请求地址
     changeOrigin: true, // 默认false，是否需要改变原始主机头为目标URL
-    ws: true, // 是否代理websockets
     pathRewrite: {
       "^/": "/", // 重写路径
     },
@@ -89,4 +109,6 @@ setInterval(() => {
   });
 }, 1000 * 60 * 5);
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () =>
+  console.log(`Example app listening at http://localhost:${port}`)
+);
